@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, Select, message, Table, DatePicker} from "antd";
 import Layout from "../components/Layouts/Layout";
+import moment from 'moment';
 import axios from "axios";
 import Spinner from "../components/Spinner";
 const {RangePicker} = DatePicker;
@@ -11,16 +12,15 @@ function HomePage() {
   const [allTransactions, setAllTransactions] = useState([]);
   const [frequency, setFrequency] = useState("7");
   const [selectedDate, setSelectedDate] = useState([]);
+  const [type, setType] = useState("all");
 
   // table data
   const columns = [
     {
       title: "Date",
       dataIndex: "date",
-      render : (date) => {
-        return (
-          <span>{new Date(date).toLocaleDateString()}</span>
-        )
+      render : (text) => {
+        return moment(text).format('YYYY-MM-DD')
       }
     },
     {
@@ -57,6 +57,8 @@ function HomePage() {
         userid: user._id,
         frequency,
         selectedDate,
+        type,
+
       });
       setLoading(false);
       setAllTransactions(res.data);
@@ -71,7 +73,7 @@ function HomePage() {
   useEffect(() => {
     
     getAllTransactions();
-  }, [frequency,selectedDate]);
+  }, [frequency,selectedDate,type]);
 
   //form handleling
   const handleSubmit = async (values) => {
@@ -81,6 +83,7 @@ function HomePage() {
       await axios.post("/transactions/add-transaction", {
         ...values,
         userid: user._id,
+        ...(type !== "all" && { type })
       });
       setLoading(false);
       message.success("Transaction Added Successfully");
@@ -100,10 +103,20 @@ function HomePage() {
           <Select.Option value="7">Last 1 Week</Select.Option>
           <Select.Option value="30">Last 1 Month</Select.Option>
           <Select.Option value="365">Last 1 Year</Select.Option>
-          <Select.Option value="custom">custome</Select.Option>
+          <Select.Option value="custom">custom</Select.Option>
         </Select>
-        {frequency === "custome" && <RangePicker value={selectedDate} onChange={(values) => setSelectedDate(values)} />}
+        {frequency === "custom" && <RangePicker value={selectedDate} onChange={(values) => setSelectedDate(values)} />}
         </div>
+        <div>
+        <h6>Select Type</h6>
+        <Select value={type} onChange = {(values) =>setType(values)}>
+          <Select.Option value="all">Last 1 Week</Select.Option>
+          <Select.Option value="income">Last 1 Month</Select.Option>
+          <Select.Option value="expense">Last 1 Year</Select.Option>
+        </Select>
+        {frequency === "custom" && <RangePicker value={selectedDate} onChange={(values) => setSelectedDate(values)} />}
+        </div>
+
         <div>
           <button
             className="btn btn-success"
@@ -113,6 +126,9 @@ function HomePage() {
           </button>
         </div>
       </div>
+
+
+      
       <div className="content">
         <Table columns={columns} dataSource={allTransactions} />
       </div>
