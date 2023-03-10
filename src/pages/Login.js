@@ -12,7 +12,7 @@ const Login = () => {
         try{
             setLoading(true);
            const {data}= await axios.post('/users/login',values);
-            message.success('Login Successfull');
+            message.success('Login Success');
             localStorage.setItem('user',JSON.stringify({...data.user,password:""}));
             setLoading(false);
             navigate('/');
