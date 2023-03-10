@@ -18,7 +18,8 @@ function HomePage() {
           <div className="content">
 
           </div>
-          <Modal title = "Add Transaction" visible = {showModal} onCancel= {() => setShowModal(false)}
+          <Modal title = "Add Transaction" 
+          open= {showModal} onCancel= {() => setShowModal(false)}
             footer = {false}
           > 
             <h1>Hello</h1>
