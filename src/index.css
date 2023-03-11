@@ -4,7 +4,7 @@
   box-sizing : border-box;
 }
 .content{
- height: 80vh;
+ height: 100vh;
 }
 .register-page{
   /* background-color: #f1f1f1; */
@@ -22,3 +22,20 @@ padding: 15px 20px;
 box-shadow: 0 0 3px grey;
 }
 /*transaction page*/
+
+/* antd icon */
+.switch-icon{
+  border:1px solid rgba(0, 0, 0, 0.677);
+  border-radius: 5px;
+  padding:  10px 15px;
+}
+.anticon svg {
+  font-size: 20px;
+  cursor: pointer;
+}
+.active-icon{
+  color: #1a1b1c;
+}
+.inactive-icon{
+  color: #868383;
+}
