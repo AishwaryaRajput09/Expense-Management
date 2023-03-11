@@ -60,7 +60,9 @@ function HomePage() {
            setEditable(record);
            setShowModal(true);
            }} />
-          <DeleteOutlined className="mx-2" />
+          <DeleteOutlined className="mx-2" onClick={()=>{
+            handleDelete(record);
+          }}/>
         </div>
       ),
     },
@@ -90,6 +92,11 @@ function HomePage() {
   useEffect(() => {
     getAllTransactions();
   }, [frequency, selectedDate, type]);
+
+  //delete handler
+  const handleDelete = () =>{
+
+  }
 
   //form handleling
   const handleSubmit = async (values) => {
